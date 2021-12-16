@@ -11,6 +11,7 @@ const {
     ROPSTEN,
     networks,
     complete_tx,
+    EULER_COIN_LIST
 } = require('./utils');
 
 const config = require('./config')
@@ -30,7 +31,7 @@ const provider = new ethers.providers.JsonRpcProvider(rpc_url)
 //{"inputs":[{"internalType":"address","name":"token","type":"address"}],
 //"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
-async function main()
+async function get_test_coin(wallet)
 {
     const faucet_abi_req = await axios.get(faucet_abi_url)
     if (faucet_abi_req.status != 200)
@@ -41,14 +42,22 @@ async function main()
 
     const faucet_abi = faucet_abi_req.data.result
     console.log(faucet_abi)
-    var wallet = new Wallet(config.pri_key,provider)
-    console.log("use wallet:%s",wallet.address)
+    console.log("use wallet:%s\n",wallet.address)
     var faucet_contract = new Contract(faucet_contract_addr,faucet_abi,wallet)
-    while (true)
+
+    for (var i in EULER_COIN_LIST)
     {
-        var withdraw = await faucet_contract.withdraw(ROPSTEN.USDC)
-        console.log(withdraw)
+        await complete_tx('withdraw:'+i,faucet_contract.withdraw(EULER_COIN_LIST[i]),{gasLimit:500000})
+
+        console.log("get coin :%s\n",EULER_COIN_LIST[i])
     }
+}
+
+async function main()
+{
+    
+    var wallet = new Wallet(config.pri_key,provider)
+    get_test_coin(wallet)
 }
 
 main()
