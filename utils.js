@@ -70,7 +70,7 @@ async function complete_tx(msg, response, confirms)
     console.log('--',msg, '...')
     try {
         var res = await response
-        var rec = await res.wait(confirms = !!confirms?confirms:6)
+        var rec = await res.wait(confirms = !!confirms?confirms:6) //12 all confirm``
     }catch(e) {
         console.log('--',msg, 'failed')
         throw e
