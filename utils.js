@@ -85,18 +85,23 @@ const EULER_TEST_COIN = [
 '0xCAfC3274Ba43825fCDCcE3D3263132A399658C7D',
 '0x5D4553bc5dE02216322306A8f5ed8398eCB6d411',
 '0x8230335ea1980A124678fF2297Be692cF2FDE6BE',
-'0x318010fe8ee7c627e60dcfBF52A16fA79c22ad5F',
+'0x318010fe8ee7c627e60dcfBF52A16fA79c22ad5F', //WBTC
 '0x604a8d0AAdD03AF55Fbf4445468d6bC90A94aF8B',
 '0x19bBa4A58dD289635c48a407542D5B815e4f7094',
 '0x92470540255656BA36EF50fC9dba77011922284d',
 '0x6F37e457464B7D605F468FAB68F4f64ac48C2dEa'
 ]
+const faucet_abi_url = 'https://api-ropsten.etherscan.io/api?module=contract&action=getabi&address=0xeacec657dad8923e057f62eb7f0d6b10ede1e716'
+const rpc_url = 'https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'
+
 
 module.exports = {
     networks : {
         MAINNET : 1,
         ROPSTEN : 3,
     },
+    faucet_abi_url: faucet_abi_url,
+    rpc_url:rpc_url,
     EULER_COIN_LIST : EULER_TEST_COIN,
     ETH_MAIN_COIN : '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
     ROPSTEN: {

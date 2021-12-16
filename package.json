@@ -1,0 +1,26 @@
+{
+  "name": "euler_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "node main.js"
+  },
+  "dependencies": {
+     "node-xlsx" : "",
+     "ethers": ""
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qzhha/euler_test.git"
+    
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/qzhha/euler_test/issues"
+  },
+  "homepage": "https://github.com/qzhha/euler_test#readme"
+}

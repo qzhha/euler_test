@@ -1,35 +1,26 @@
-const {
-    ethers,
-    Wallet,
-    BigNumber,
-    utils,
-    Contract,
-    constants
-} = require('ethers');
+const {ethers,Wallet,BigNumber,utils,Contract,constants} = require('ethers');
+const {ROPSTEN,networks,complete_tx,EULER_COIN_LIST,faucet_abi_url,rpc_url} = require('./utils');
+const {erc20} = require('./abi')
 
-const {
-    ROPSTEN,
-    networks,
-    complete_tx,
-    EULER_COIN_LIST
-} = require('./utils');
-
+const euler_abi = require('./Euler_sol_Euler.json')
+const exec_abi = require('./euler-abi/contracts/modules/Exec.sol/Exec.JsonRpcProvider')
 const config = require('./config')
-
 const axios = require('axios')
+const addr_json = require('./euler-abi/addresses/euler-addresses-ropsten.json')
 
+// --- contract addr ---
 const faucet_contract_addr = '0xEacEC657dAd8923e057f62EB7F0D6b10ede1E716'
-const rpc_url = 'https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'
-const faucet_abi_url = 'https://api-ropsten.etherscan.io/api?module=contract&action=getabi&address=0xeacec657dad8923e057f62eb7f0d6b10ede1e716'
+// --- contract addr ---
+
+// --- contract abi ---
+const etoken_json = require('./euler-abi/contracts/modules/EToken.sol/EToken.json')
+const dtoken_json = require('./euler-abi/contracts/modules/DToken.sol/DToken.json')
+// --- contract abi ---
+
+
 
 const provider = new ethers.providers.JsonRpcProvider(rpc_url)
 
-//[{"inputs":[{"internalType":"uint256","name":"_threshold","type":"uint256"}],
-//"stateMutability":"nonpayable","type":"constructor"},
-//{"inputs":[{"internalType":"uint256","name":"_threshold","type":"uint256"}]
-//,"name":"setThreshold","outputs":[],"stateMutability":"nonpayable","type":"function"},
-//{"inputs":[{"internalType":"address","name":"token","type":"address"}],
-//"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 
 async function get_test_coin(wallet)
 {
@@ -53,6 +44,32 @@ async function get_test_coin(wallet)
     }
 }
 
+function getitems(type)
+{
+    const items = []
+    switch(type){
+        case "deposit":
+        {
+            
+            break
+        }
+    }
+}
+
+async function deposit(wallet,token_addr)
+{
+    var exec_contract = new Contract(addr_json['exec'],exec_abi,wallet)
+    var token_contract = new Contract(token_addr,erc20,wallet)
+
+    await complete_tx("approve "+token_addr,token_contract.approve(wallet.address,constants.MaxUInt256))
+
+    //get items
+
+    await complete_tx("dispatch",exec_contract.batchDispatch())
+
+
+}
+
 async function main()
 {
     
@@ -60,4 +77,13 @@ async function main()
     get_test_coin(wallet)
 }
 
-main()
+async function express_abi(abi)
+{
+    const iface = new ethers.utils.Interface(abi);
+    console.log(iface.getFunction("0xeb937aeb"))
+}
+
+//main()
+
+//express_abi(exec_abi)
+
