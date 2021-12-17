@@ -111,6 +111,7 @@ module.exports = {
         USDT : '0xCAfC3274Ba43825fCDCcE3D3263132A399658C7D',
         UNI  : '0x5D4553bc5dE02216322306A8f5ed8398eCB6d411',
         AAVE : '0x8230335ea1980A124678fF2297Be692cF2FDE6BE',
+        WBTC : '0x318010fe8ee7c627e60dcfBF52A16fA79c22ad5F',
     },
     complete_tx: complete_tx,
 }

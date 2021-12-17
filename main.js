@@ -1,9 +1,6 @@
 const {ethers,Wallet,BigNumber,utils,Contract,constants} = require('ethers');
 const {ROPSTEN,networks,complete_tx,EULER_COIN_LIST,faucet_abi_url,rpc_url} = require('./utils');
-const {erc20} = require('./abi')
-
-const euler_abi = require('./Euler_sol_Euler.json')
-const exec_abi = require('./euler-abi/contracts/modules/Exec.sol/Exec.JsonRpcProvider')
+const {erc20} = require('./abi') // base abi
 const config = require('./config')
 const axios = require('axios')
 const addr_json = require('./euler-abi/addresses/euler-addresses-ropsten.json')
@@ -13,8 +10,11 @@ const faucet_contract_addr = '0xEacEC657dAd8923e057f62EB7F0D6b10ede1E716'
 // --- contract addr ---
 
 // --- contract abi ---
+const euler_json = require('./Euler_sol_Euler.json')
+const exec_json = require('./euler-abi/contracts/modules/Exec.sol/Exec.json')
 const etoken_json = require('./euler-abi/contracts/modules/EToken.sol/EToken.json')
 const dtoken_json = require('./euler-abi/contracts/modules/DToken.sol/DToken.json')
+const market_json = require('./euler-abi/contracts/modules/Markets.sol/Markets.json')
 // --- contract abi ---
 
 
@@ -32,49 +32,76 @@ async function get_test_coin(wallet)
     }
 
     const faucet_abi = faucet_abi_req.data.result
-    console.log(faucet_abi)
+    //console.log(faucet_abi)
     console.log("use wallet:%s\n",wallet.address)
     var faucet_contract = new Contract(faucet_contract_addr,faucet_abi,wallet)
 
     for (var i in EULER_COIN_LIST)
     {
-        await complete_tx('withdraw:'+i,faucet_contract.withdraw(EULER_COIN_LIST[i]),{gasLimit:500000})
+        await complete_tx('withdraw:'+EULER_COIN_LIST[i],faucet_contract.withdraw(EULER_COIN_LIST[i]),{gasLimit:500000})
 
         console.log("get coin :%s\n",EULER_COIN_LIST[i])
     }
 }
 
-function getitems(type)
+function getitems(type,wallet,amount)
 {
+    const etoken_addr = addr_json['modules']['eToken']
+    const dtoken_addr = addr_json['modules']['dToken']
+    const market_addr = addr_json['modules']['markets']
+
+    console.log(etoken_addr)
+
+    const etoken = new Contract(etoken_addr,etoken_json['abi'],wallet)
+    const dtoken = new Contract(dtoken_addr,dtoken_json['abi'],wallet)
+    const market = new Contract(addr_json['modules']['markets'],market_json['abi'],wallet)
+
     const items = []
     switch(type){
         case "deposit":
         {
-            
+            items.push(
+                {
+                    allowError: false,
+                    proxyAddr: etoken_addr,
+                    data: etoken.interface.encodeFunctionData("deposit", [wallet.address,amount]),
+                },
+                {
+                    allowError: false,
+                    proxyAddr: market_addr,
+                    data: market.interface.encodeFunctionData("enterMarket",[wallet.address,market_addr])
+                }
+            )
             break
         }
     }
+    return items
 }
 
 async function deposit(wallet,token_addr)
 {
-    var exec_contract = new Contract(addr_json['exec'],exec_abi,wallet)
+    var exec_contract = new Contract(addr_json['exec'],exec_json['abi'],wallet)
     var token_contract = new Contract(token_addr,erc20,wallet)
+    
 
-    await complete_tx("approve "+token_addr,token_contract.approve(wallet.address,constants.MaxUInt256))
+    //await complete_tx("approve "+token_addr,token_contract.approve(wallet.address,constants.MaxUint256))
+    
+    var balance = await token_contract.balanceOf(wallet.address)
+    console.log("balance:%s",utils.formatEther(balance))
 
     //get items
-
-    await complete_tx("dispatch",exec_contract.batchDispatch())
+    var items = getitems("deposit",wallet,balance)
+    await complete_tx("dispatch",exec_contract.batchDispatch(items,wallet.address,{gasLimit:500000}))
 
 
 }
 
 async function main()
 {
-    
     var wallet = new Wallet(config.pri_key,provider)
-    get_test_coin(wallet)
+    //await get_test_coin(wallet)
+
+    await deposit(wallet,ROPSTEN.WBTC)
 }
 
 async function express_abi(abi)
@@ -83,7 +110,7 @@ async function express_abi(abi)
     console.log(iface.getFunction("0xeb937aeb"))
 }
 
-//main()
+main()
 
-//express_abi(exec_abi)
+//express_abi(exec_json)
 
