@@ -93,6 +93,13 @@ const EULER_TEST_COIN = [
 ]
 const faucet_abi_url = 'https://api-ropsten.etherscan.io/api?module=contract&action=getabi&address=0xeacec657dad8923e057f62eb7f0d6b10ede1e716'
 
+
+function wait(second) {                                              
+    
+    let ChildProcess_ExecSync = require('child_process').execSync;
+    ChildProcess_ExecSync('sleep ' + second);
+};
+
 module.exports = {
     networks : {
         MAINNET : 1,
@@ -100,7 +107,8 @@ module.exports = {
     },
     net_url: {
         ROPSTEN: 'https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-        BSC    : 'https://bsc-dataseed.binance.org'
+        BSC    : 'https://bsc-dataseed.binance.org',
+        MATIC  : 'https://rpc-mainnet.matic.network',//'https://mainnet.infura.io/v3/1b8712af6c5748f594ee5cc08979b1b2',//'https://rpc-mainnet.matic.network',
     },
     faucet_abi_url: faucet_abi_url,
     EULER_COIN_LIST : EULER_TEST_COIN,
@@ -115,4 +123,5 @@ module.exports = {
         WBTC : '0x318010fe8ee7c627e60dcfBF52A16fA79c22ad5F',
     },
     complete_tx: complete_tx,
+    wait : wait,
 }

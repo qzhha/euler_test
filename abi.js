@@ -22,8 +22,10 @@ const erc721 =
      'function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)'
 ]
 
+const polygonNFTSale_url = 'https://api.polygonscan.com/api?module=contract&action=getabi&address=0x9ed4b724dab2c201ef1942348360be77329c0347'
 
 module.exports = {
+NFTSale_url: polygonNFTSale_url,
 erc20 : erc20,
 erc721 : erc721,
 uniswap : uniswap,
