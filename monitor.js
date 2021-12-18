@@ -21,10 +21,10 @@ async function listenEvent()
         {
             console.log("get latest block:%s",new_num)
             var blk = await provider._getBlock(new_num)
-            console.log(blk.transactions)
-            for (var i in transactions)
+            //console.log(blk.transactions)
+            for (var i in blk.transactions)
             {
-                console.log(transactions[i])
+                console.log(blk.transactions[i])
             }
             break
         }
