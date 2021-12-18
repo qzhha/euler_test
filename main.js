@@ -64,12 +64,12 @@ function getitems(type,wallet,amount)
                 {
                     allowError: false,
                     proxyAddr: etoken_addr,
-                    data: etoken.interface.encodeFunctionData("deposit", [wallet.address,amount]),
+                    data: etoken.interface.encodeFunctionData("deposit", [0,amount]),
                 },
                 {
                     allowError: false,
                     proxyAddr: market_addr,
-                    data: market.interface.encodeFunctionData("enterMarket",[wallet.address,market_addr])
+                    data: market.interface.encodeFunctionData("enterMarket",[1,market_addr])
                 }
             )
             break
@@ -91,7 +91,9 @@ async function deposit(wallet,token_addr)
 
     //get items
     var items = getitems("deposit",wallet,balance)
-    await complete_tx("dispatch",exec_contract.batchDispatch(items,wallet.address,{gasLimit:500000}))
+    var address = []
+    address.push(wallet.address)
+    await complete_tx("dispatch",exec_contract.batchDispatch(items,address,{gasLimit:500000}))
 
 
 }

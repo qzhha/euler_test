@@ -92,16 +92,17 @@ const EULER_TEST_COIN = [
 '0x6F37e457464B7D605F468FAB68F4f64ac48C2dEa'
 ]
 const faucet_abi_url = 'https://api-ropsten.etherscan.io/api?module=contract&action=getabi&address=0xeacec657dad8923e057f62eb7f0d6b10ede1e716'
-const rpc_url = 'https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'
-
 
 module.exports = {
     networks : {
         MAINNET : 1,
         ROPSTEN : 3,
     },
+    net_url: {
+        ROPSTEN: 'https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+        BSC    : 'https://bsc-dataseed.binance.org'
+    },
     faucet_abi_url: faucet_abi_url,
-    rpc_url:rpc_url,
     EULER_COIN_LIST : EULER_TEST_COIN,
     ETH_MAIN_COIN : '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
     ROPSTEN: {
