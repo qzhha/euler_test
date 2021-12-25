@@ -104,11 +104,13 @@ module.exports = {
     networks : {
         MAINNET : 1,
         ROPSTEN : 3,
+        RINKEBY : 4 
     },
     net_url: {
         ROPSTEN: 'https://ropsten.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-        BSC    : 'https://bsc-dataseed.binance.org',
-        MATIC  : 'https://rpc-mainnet.matic.network',//'https://mainnet.infura.io/v3/1b8712af6c5748f594ee5cc08979b1b2',//'https://rpc-mainnet.matic.network',
+        RINKEBY: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+        BSC    : 'https://bsc-dataseed1.ninicoin.io',//'https://bsc-mainnet.gateway.pokt.network/v1/lb/61bdfe7606f43e003c574700',
+        MATIC  : 'https://poly-mainnet.gateway.pokt.network/v1/lb/61bdf1b806f43e003c57434f',//'https://mainnet.infura.io/v3/1b8712af6c5748f594ee5cc08979b1b2',//'https://rpc-mainnet.matic.network',
     },
     faucet_abi_url: faucet_abi_url,
     EULER_COIN_LIST : EULER_TEST_COIN,

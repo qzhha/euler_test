@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "axios": "^0.24.0",
+    "child_process": "^1.0.2",
     "ethers": "",
-    "node-xlsx": ""
+    "node-xlsx": "",
+    "web3":""
   },
   "repository": {
     "type": "git",

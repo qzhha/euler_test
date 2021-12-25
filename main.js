@@ -1,8 +1,9 @@
 const {ethers,Wallet,BigNumber,utils,Contract,constants} = require('ethers');
-const {ROPSTEN,networks,complete_tx,EULER_COIN_LIST,faucet_abi_url,rpc_url} = require('./utils');
+const {ROPSTEN,networks,complete_tx,EULER_COIN_LIST,faucet_abi_url,rpc_url,net_url} = require('./utils');
 const {erc20} = require('./abi') // base abi
 const config = require('./config')
 const axios = require('axios')
+const primitive = require('./primitive_finance/primitive')
 const addr_json = require('./euler-abi/addresses/euler-addresses-ropsten.json')
 
 // --- contract addr ---
@@ -19,7 +20,7 @@ const market_json = require('./euler-abi/contracts/modules/Markets.sol/Markets.j
 
 
 
-const provider = new ethers.providers.JsonRpcProvider(rpc_url)
+const provider = new ethers.providers.JsonRpcProvider(net_url.RINKEBY)
 
 
 async function get_test_coin(wallet)
@@ -98,12 +99,18 @@ async function deposit(wallet,token_addr)
 
 }
 
+async function primitive_fi(wallet)
+{
+    //faucet 
+    //
+}
+
 async function main()
 {
     var wallet = new Wallet(config.pri_key,provider)
     //await get_test_coin(wallet)
-
-    await deposit(wallet,ROPSTEN.WBTC)
+    //await deposit(wallet,ROPSTEN.WBTC)
+    await primitive.interact(wallet)
 }
 
 async function express_abi(abi)
