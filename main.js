@@ -1,4 +1,4 @@
-const {ethers,Wallet,BigNumber,utils,Contract,constants} = require('ethers');
+const {ethers,Wallet,utils,Contract} = require('ethers');
 const {ROPSTEN,networks,complete_tx,EULER_COIN_LIST,faucet_abi_url,rpc_url,net_url} = require('./utils');
 const {erc20} = require('./abi') // base abi
 const config = require('./config')
