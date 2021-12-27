@@ -1,10 +1,11 @@
 const {ethers,Wallet,utils,Contract} = require('ethers');
-const {ROPSTEN,networks,complete_tx,EULER_COIN_LIST,faucet_abi_url,rpc_url,net_url} = require('./utils');
+const {load_accounts_excel,ROPSTEN,networks,complete_tx,EULER_COIN_LIST,faucet_abi_url,rpc_url,net_url} = require('./utils');
 const {erc20} = require('./abi') // base abi
 const config = require('./config')
 const axios = require('axios')
 const primitive = require('./primitive_finance/primitive')
 const addr_json = require('./euler-abi/addresses/euler-addresses-ropsten.json')
+const sysargs = require('minimist')(process.argv.slice(2))
 
 // --- contract addr ---
 const faucet_contract_addr = '0xEacEC657dAd8923e057f62EB7F0D6b10ede1E716'
@@ -99,18 +100,22 @@ async function deposit(wallet,token_addr)
 
 }
 
-async function primitive_fi(wallet)
+async function primitive_fi(pri)
 {
-    //faucet 
-    //
+    var wallet = new Wallet(pri,provider)
+    await primitive.interact(wallet)
 }
 
 async function main()
 {
-    var wallet = new Wallet(config.pri_key,provider)
     //await get_test_coin(wallet)
     //await deposit(wallet,ROPSTEN.WBTC)
-    await primitive.interact(wallet)
+    var accounts = load_accounts_excel('./new_matcha.xls',provider)
+    for (var i = 0 ;i < accounts.length; ++i)
+    {   
+        console.log("start interact:%s",accounts[i].address)
+        primitive.interact(accounts[i]) 
+    }
 }
 
 async function express_abi(abi)
@@ -119,7 +124,6 @@ async function express_abi(abi)
     console.log(iface.getFunction("0xeb937aeb"))
 }
 
+//primitive_fi(sysargs["pri"])
 main()
-
-//express_abi(exec_json)
 

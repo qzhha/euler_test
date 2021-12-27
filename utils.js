@@ -1,7 +1,7 @@
 
 const xlsx = require('node-xlsx');
 const fs = require('fs');
-
+const {Wallet} = require('ethers')
 
 function batch_create_account(count, excel_path, provider) {
     var accounts = new Array()
@@ -58,7 +58,7 @@ function load_accounts_excel(excel_path, provider)
             console.log("xls format error");
             continue;
         }
-        console.log(rowData[0].toString(), rowData[2].toString().substr(2))
+//        console.log(rowData[0].toString(), rowData[2].toString().substr(2))
         accounts.push(new Wallet(rowData[2].toString().substr(2), provider));
     }
     return accounts;
@@ -126,4 +126,5 @@ module.exports = {
     },
     complete_tx: complete_tx,
     wait : wait,
+    load_accounts_excel:load_accounts_excel,
 }

@@ -36,8 +36,7 @@ async function interact_once(wallet)
     var rbn_yfi_mint_data = '0x40c10f19'+abiCoder.encode(["address","uint256"],[wallet.address,BigNumber.from('10000000000000000000')]).slice(2);
 
     var usdc_mint_data = '0x40c10f19'+abiCoder.encode(["address","uint256"],[wallet.address,BigNumber.from('100000000000')]).slice(2);
-    console.log(rbn_yfi_mint_data)
-    
+    try{    
     await complete_tx("mint_rbn",wallet.sendTransaction({to : rbn_addr,data : rbn_yfi_mint_data,gasLimit : 500000}),3)
     await complete_tx("mint_usdc",wallet.sendTransaction({to : usdc_addr,data : usdc_mint_data,gasLimit : 500000}),3)
     await complete_tx("rbn_approve",wallet.sendTransaction({to:rbn_addr,data:rbn_approve_data,gasLimit:500000}),3)
@@ -49,8 +48,11 @@ async function interact_once(wallet)
     await complete_tx("yfi_approve",wallet.sendTransaction({to:yfi_addr,data:yfi_approve_data,gasLimit:500000}),3)
     await complete_tx("usdc_approve",wallet.sendTransaction({to:usdc_addr,data:usdc_approve_data,gasLimit:500000}),3)
     await complete_tx("yfi_usdc_lp",wallet.sendTransaction({to:lp_addr,data:yfi_usdc_lp_data,gasLimit:500000}),3)
+    }
+    catch(e) {
 
-    console.log("end interact:%s".wallet.address)
+    }
+    console.log("end interact:%s",wallet.address)
     
 
 }
